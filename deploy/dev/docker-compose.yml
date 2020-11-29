@@ -1,0 +1,51 @@
+version: '3'
+services:
+  mbtidb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes: 
+      - ../initMySql.sql:/docker-entrypoint-initdb.d/init.sql
+    networks: 
+      - mbti_network
+  server:
+    stdin_open: true
+    build:
+      context: ../../
+      dockerfile: ./server/Dockerfile
+    environment:
+      MARIA_DB_HOST: ${MARIA_DB_HOST}
+      MARIA_DB_HOST_PORT: ${MARIA_DB_HOST_PORT}
+      MARIA_DB_USER: ${MARIA_DB_USER}
+      MARIA_DB_SECRET: ${MARIA_DB_SECRET}
+      MARIA_DB_NAME: ${MARIA_DB_NAME}
+    depends_on: 
+      - mbtidb
+    ports:
+      - "4444:3444"
+    volumes:
+      - ../../Data:/app/Data
+    networks: 
+      - mbti_network
+    command: ["npm", "run", "serve-dev"]
+
+  client:
+    stdin_open: true
+    build:
+      context: ../../
+      dockerfile: ./client/Dockerfile
+    environment:
+      REACT_APP_MBTI_TEST_API_URL: ${REACT_APP_MBTI_TEST_API_URL}
+    depends_on: 
+      - mbtidb
+      - server
+    ports:
+      - "4000:3000"
+    networks: 
+      - mbti_network
+networks:
+  mbti_network:
+    driver: bridge
