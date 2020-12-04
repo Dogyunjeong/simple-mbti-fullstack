@@ -1,5 +1,5 @@
-namespace csvConfig {
-  export const PATHS = {
+const csvConfig = {
+  PATHS: {
     Questions: '../Data/Questions.csv',
     Answers: '../Data/Test-Cases.csv',
   }

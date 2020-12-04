@@ -20,6 +20,6 @@
       "../../data/*"
   ],
   "exclude": [
-      "src/spec/**/*"
+      "src/__tests__/**/*"
   ]
 }
