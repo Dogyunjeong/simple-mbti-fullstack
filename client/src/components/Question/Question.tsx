@@ -22,7 +22,7 @@ const Question: React.FC<QuestionProps> = ({ label, value, onChange }) => {
         >
           <span className="disagree">Disagree</span>
           {Array.from(Array(7).keys()).map((v) => (
-            <Radio key={`${label}-value-${v}`} value={v} />
+            <Radio key={`${label}-value-${v+1}`} value={v+1} />
           ))}
           <span className="agree">Agree</span>
         </Radio.Group>

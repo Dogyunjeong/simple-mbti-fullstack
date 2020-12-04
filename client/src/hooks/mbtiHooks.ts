@@ -25,11 +25,14 @@ export const useQuestionaireSubmit = () => {
   const [responses, setResponses] = useState<ResponseTypes.Response[]>([])
   const [email, setEmail] = useState<string>('')
   const setResponse = (qId: number, value: number) => {
-    const target: { questionId: number, response?: number} = _.find(responses, ({ questionId }) => questionId === qId) || {
+    const existingTarget = _.find(responses, ({ questionId }) => questionId === qId)
+  
+    const target: { questionId: number, response?: number} = existingTarget || {
       questionId: qId
     }
     target.response = value
-    setResponses(_.sortBy([...responses, target] as ResponseTypes.Response[] , 'questionId'))
+    const updateResponses = !!existingTarget ? [...responses] : [...responses, target] 
+    setResponses(_.sortBy(updateResponses as ResponseTypes.Response[] , 'questionId'))
   }
   const submit = async (): Promise<{ id: string } | undefined> => {
     try {
