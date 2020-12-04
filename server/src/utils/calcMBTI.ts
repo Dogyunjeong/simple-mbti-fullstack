@@ -15,7 +15,7 @@ const calcMBTI = async (responses: (string | number)[]) => {
     if (typeof response === 'string') {
       target.direction = (parseInt(q.Direction, 10) * (parseInt(response, 10) - 4)) + target.direction
     } else {
-      target.direction = (q.Direction * response - 4) + target.direction
+      target.direction = (q.Direction * (response - 4)) + target.direction
     }
   });
   let MBTI = ''
